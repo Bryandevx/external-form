@@ -1,11 +1,44 @@
 <template>
   <div class="container">
-    <h3>Personal Data</h3>
-    <form @input="submit" class="">
-      <input v-model="form.fullName" type="text" placeholder="Full-name" />
-      <input v-model="form.birthDate" type="text" placeholder="birth-date" />
-      <input v-model=" form.id" type="text" placeholder="id" disabled />
-      <input v-model="form.gender" type="text" placeholder="gender" />
+    <h3>Datos Personales</h3>
+    <form @input="submit" class="form">
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label class="control-label" for="name">Nombre Completo</label><br />
+          <input class="form-control" required />
+        </div>
+
+        <div class="form-row mt-2">
+          <div class="form-group col-md-4">
+            <label class="control-label" for="identification">
+              Identificacion
+            </label>
+            <input type="text" class="form-control" />
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label" for="birth_date"
+              >Fecha de Nacimiento</label
+            ><br />
+            <input
+              class="form-control"
+              type="date"
+              name="birth_date"
+              id="birth_date"
+              required
+            />
+          </div>
+
+          <div class="form-group col-md-4">
+            <label class="control-label" for="gender">Género</label><br />
+            <select class="custom-select" required>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Intersex">Intersex</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -18,7 +51,7 @@ export default {
   props: {
     masterData: {
       type: Object,
-      required: true,
+      //required: true,
     },
   },
   data() {
@@ -38,9 +71,9 @@ export default {
         data: {
           personalData: {
             id: this.form.id,
-            fullName:this.form.fullName,
-            birthDate:this.form.birthDate,
-            gender:this.form.gender,
+            fullName: this.form.fullName,
+            birthDate: this.form.birthDate,
+            gender: this.form.gender,
           },
         },
       });
