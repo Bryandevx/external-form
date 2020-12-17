@@ -1,35 +1,36 @@
 <template>
   <div>
-    <login-data-form v-if="currentStep === 1" @update="processStep">
-    </login-data-form>
-
-    <personal-data-form
-      v-if="currentStep === 2"
-      @update="processStep"
-      :masterData="formData"
-    ></personal-data-form>
-
-    <contact-data-form
-      v-if="currentStep === 3"
-      @update="processStep"
-      :masterData="formData"
-    ></contact-data-form>
-
-    <other-data-form
-      v-if="currentStep=== 4"
-      @update="processStep"
-    ></other-data-form>
-
-    <div class="progress-bar">
-      <div :style="`width: ${progress}%;`"></div>
+    <div class="container">
+      <keep-alive>
+        <component
+          ref="currentStep"
+          :is="currentStep"
+          @update="processStep"
+          :masterData="formData"
+        >
+        </component>
+      </keep-alive>
     </div>
 
     <div class="container">
-      <button @click="decreaseStep" class="btn-outlined">Go Back</button>
-      <button @click="increaseStep" class="btn">Go Next</button>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          :style="`width: ${progress}%;`"
+          aria-valuenow="100"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
     </div>
 
-    <pre><code>{{currentStep}}</code></pre>
+    <div class="container">
+      <button @click="goPrevStep" class="btn-outlined">Go Back</button>
+      <button @click="goNextStep" class="btn">Go Next</button>
+    </div>
+
+    <pre><code>{{currentStep}} is Step {{currentStepNumber}}</code></pre>
     <pre><code>{{formData}}</code></pre>
   </div>
 </template>
@@ -52,7 +53,13 @@ export default {
   },
   data() {
     return {
-      currentStep: 1,
+      currentStepNumber: 1,
+      steps: [
+        "LoginDataForm",
+        "PersonalDataForm",
+        "ContactDataForm",
+        "OtherDataForm",
+      ],
       formData: {
         loginData: null,
         personalData: null,
@@ -67,16 +74,23 @@ export default {
       console.log("here processing some steps!!");
       Object.assign(this.formData, step.data);
     },
-    increaseStep() {
-      this.currentStep += 1;
+    goNextStep() {
+      this.currentStepNumber += 1;
     },
-    decreaseStep() {
-      this.currentStep -= 1;
+    goPrevStep() {
+      this.currentStepNumber -= 1;
     },
   },
   computed: {
     progress() {
-      return (this.currentStep / 4) * 100;
+      return (this.currentStepNumber / this.length) * 100;
+    },
+    currentStep() {
+      //retorna el nombre del componente..(loginDataForm, PersonalDataForm,....)
+      return this.steps[this.currentStepNumber - 1];
+    },
+    length() {
+      return this.steps.length;
     },
   },
 };

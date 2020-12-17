@@ -1,48 +1,58 @@
 <template>
   <div class="container">
     <h3>Datos Personales</h3>
-    <form @input="submit" class="form">
-      <div class="form-row">
-        <div class="form-group col-md-12">
-          <label class="control-label" for="name">Nombre Completo</label><br />
-          <input v-model="form.fullName" class="form-control"  required />
-        </div>
-
-        <div class="form-row mt-2">
-          <div class="form-group col-md-4">
-            <label class="control-label" for="identification">
-              Identificacion
-            </label>
-
-            <input type="text" v-if="masterData.loginData.userType.isLegal" v-model="form.id" class="form-control" disabled/>
-            <input type="text" v-else class="form-control" disabled/>
-          </div>
-
-          <div @change="submit" class="form-group col-md-4">
-            <label class="control-label" for="birth_date"
-              >Fecha de Nacimiento</label
+    <div
+      class="card container mt-3 d-flex justify-content-center"
+      style="width: 50rem; height:271px;"
+    >
+      <form @input="submit" class="form">
+          <div class="form-group col-md-12">
+            <label class="control-label" for="name">Nombre Completo</label
             ><br />
-            <input
-              v-model="form.birthDate"
-              class="form-control"
-              type="date"
-              name="birth_date"
-              id="birth_date"
-              required
-            />
+            <input v-model="form.fullName" class="form-control" required />
           </div>
 
-          <div @change="submit" class="form-group col-md-4">
-            <label class="control-label" for="gender">Género</label><br />
-            <select v-model="form.gender" class="custom-select" required>
-              <option value="Femenino">Femenino</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Intersex">Intersex</option>
-            </select>
-          </div>
+          <div class="form-row mt-2">
+            <div class="form-group col-md-4">
+              <label class="control-label" for="identification">
+                Identificacion
+              </label>
+
+              <input
+                type="text"
+                v-if="masterData.loginData.userType.isLegal"
+                v-model="form.id"
+                class="form-control"
+                disabled
+              />
+              <input type="text" v-else class="form-control" disabled />
+            </div>
+
+            <div @change="submit" class="form-group col-md-4">
+              <label class="control-label" for="birth_date"
+                >Fecha de Nacimiento</label
+              ><br />
+              <input
+                v-model="form.birthDate"
+                class="form-control"
+                type="date"
+                name="birth_date"
+                id="birth_date"
+                required
+              />
+            </div>
+
+            <div @change="submit" class="form-group col-md-4">
+              <label class="control-label" for="gender">Género</label><br />
+              <select v-model="form.gender" class="custom-select" required>
+                <option value="Femenino">Femenino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Intersex">Intersex</option>
+              </select>
+            </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>
 
