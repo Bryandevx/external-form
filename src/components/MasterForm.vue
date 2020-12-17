@@ -12,6 +12,7 @@
     <contact-data-form
       v-if="currentStep === 3"
       @update="processStep"
+      :masterData="formData"
     ></contact-data-form>
 
     <other-data-form

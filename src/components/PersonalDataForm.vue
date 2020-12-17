@@ -5,7 +5,7 @@
       <div class="form-row">
         <div class="form-group col-md-12">
           <label class="control-label" for="name">Nombre Completo</label><br />
-          <input class="form-control" required />
+          <input v-model="form.fullName" class="form-control"  required />
         </div>
 
         <div class="form-row mt-2">
@@ -13,14 +13,17 @@
             <label class="control-label" for="identification">
               Identificacion
             </label>
-            <input type="text" class="form-control" />
+
+            <input type="text" v-if="masterData.loginData.userType.isLegal" v-model="form.id" class="form-control" disabled/>
+            <input type="text" v-else class="form-control" disabled/>
           </div>
 
-          <div class="form-group col-md-4">
+          <div @change="submit" class="form-group col-md-4">
             <label class="control-label" for="birth_date"
               >Fecha de Nacimiento</label
             ><br />
             <input
+              v-model="form.birthDate"
               class="form-control"
               type="date"
               name="birth_date"
@@ -29,9 +32,9 @@
             />
           </div>
 
-          <div class="form-group col-md-4">
+          <div @change="submit" class="form-group col-md-4">
             <label class="control-label" for="gender">Género</label><br />
-            <select class="custom-select" required>
+            <select v-model="form.gender" class="custom-select" required>
               <option value="Femenino">Femenino</option>
               <option value="Masculino">Masculino</option>
               <option value="Intersex">Intersex</option>
@@ -51,7 +54,7 @@ export default {
   props: {
     masterData: {
       type: Object,
-      //required: true,
+      required: true,
     },
   },
   data() {
@@ -59,7 +62,7 @@ export default {
       form: {
         id: this.masterData.loginData.id,
         fullName: null,
-        birthDate: null,
+        birthDate: null, // validar que sea tipo fecha...
         gender: null,
       },
     };

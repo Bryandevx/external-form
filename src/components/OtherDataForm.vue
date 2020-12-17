@@ -4,29 +4,32 @@
     style="width: 50rem">
     <h3>Otros Datos</h3>
     <form class="form">
-      <div class="form-row mt-2">
-        <div class="form-group col-md-4">
+      <div  class="form-row mt-2">
+        <div @change="submit" class="form-group col-md-4">
           <label class="control-label" for="laboral_condition"
             >Condición Laboral</label
           >
-          <select class="custom-select" required>
+          <select v-model="form.jobStatus" class="custom-select" required>
             <option value="Empleado">Empleado</option>
             <option value="Desempleado">Desempleado</option>
             <option value="Trabajo Ocasional">Trabajo Ocasional</option>
           </select>
         </div>
 
-        <div class="form-group col-md-4">
+        <div @change="submit" class="form-group col-md-4">
           <label class="control-label" for="id_civil_status">Estado Civil</label
           ><br />
-          <select class="custom-select" required>
-            <option value="">Seleccionar</option>
+          <select v-model="form.civilStatus" class="custom-select" required>
+            <option value="Soltero">Soltero</option>
+            <option value="Casado">Casado</option>
+            <option value="Divorciado">Divorciado</option>
+            <option value="Union Libre">Union Libre</option>
           </select>
         </div>
 
-        <div class="form-group col-md-4">
+        <div @change="submit" class="form-group col-md-4">
           <label class="control-label" for="disability">Discapacidad</label>
-          <select class="custom-select" required>
+          <select v-model="form.disability" class="custom-select" required>
             <option value="">Seleccionar</option>
             <option value="Si">Si</option>
             <option value="No">No</option>
@@ -35,11 +38,11 @@
       </div>
 
       <div class="form-row mt-2">
-        <div class="form-group col-md-6">
+        <div @input="submit" class="form-group col-md-6">
           <!--especificar el trabajo-->
           <label class="control-label" for="working_ocupation">Ocupación</label
           ><br />
-          <input class="form-control" required />
+          <input v-model="form.occupation" class="form-control" required />
           <div id="especific_job_error"></div>
         </div>
 
@@ -64,7 +67,8 @@ export default {
       form: {
         civilStatus: null,
         disability: null,
-        job: null,
+        jobStatus:null,
+        occupation: null,
       },
     };
   },
@@ -75,7 +79,8 @@ export default {
           otherData: {
             civilStatus: this.form.civilStatus,
             disability: this.form.disability,
-            job: this.form.job,
+            jobStatus: this.form.jobStatus,
+            occupation: this.form.occupation
           },
         },
       });
