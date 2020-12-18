@@ -38,10 +38,10 @@
 
 
 <script>
-import ContactDataForm from "./ContactDataForm.vue";
-import LoginDataForm from "./LoginDataForm.vue";
-import OtherDataForm from "./OtherDataForm.vue";
-import PersonalDataForm from "./PersonalDataForm.vue";
+import ContactDataForm from "./Steps/ContactDataForm.vue";
+import LoginDataForm from "./Steps/LoginDataForm.vue";
+import OtherDataForm from "./Steps/OtherDataForm.vue";
+import PersonalDataForm from "./Steps/PersonalDataForm.vue";
 
 export default {
   name: "MasterForm",
