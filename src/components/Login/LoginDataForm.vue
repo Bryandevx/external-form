@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-content-center align-items-center">
+    <button @click="findUser" class="btn btn-primary">User checker</button>
     <div class="d-flex flex-row">
       <div
         class="card text-center shadow-lg p-3 mb-5 bg-white rounded"
@@ -48,7 +49,7 @@
             <div class="container">
               <router-link
                 :to="{
-                  name: 'register',
+                  :name = {{action}},
                   params: {
                     data: {
                       loginData: {
@@ -73,10 +74,24 @@ export default {
   name: "LoginDataForm",
   data() {
     return {
-      customUser: {
-        id: "202020",
-        status: "register",
-      },
+      customUsers: [
+        {
+          name: "Bryan",
+          id: 101010,
+          status: "register",
+        },
+        {
+          name: "Jose",
+          id: 202020,
+          status: "verify",
+        },
+        {
+          name: "Maria",
+          id: 303030,
+          satus: "citas",
+        },
+      ],
+
       documentLabel: "Identificacion", // cambiar esto a "NULL", para hacer una implementacion dinamica con transiciones
       form: {
         userTypes: [
@@ -125,6 +140,13 @@ export default {
       this.submit();
       //this.getDocumentLabel();
     },
+    findUser() {
+      console.log("at find user method");
+      let name = "Luis";
+      let result = this.customUsers.find((element) => element.name === name);
+      if (typeof result === "undefined") console.log("element not found");
+      else console.log("NAME FOUND!");
+    },
   },
   computed: {
     getDocumentLabel() {
@@ -133,7 +155,15 @@ export default {
       else return "Email";
     },
     action() {
-      return this.customUser.status;
+      let result = this.customUsers.find( (element) =>
+      element.id === this.form.id)
+      
+      if(typeof(result) !== 'undefined'){
+        if(result.status === 'register') return 'register'
+        if(result.statis === 'verify') return  'verify'
+      }
+
+      return 'home' // default route?
     },
   },
 };

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Register from '../views/Register.vue'
+import Verify from '../views/Verify.vue'
 
 
 Vue.use(VueRouter)
@@ -24,6 +25,12 @@ const routes = [
     path: "/register",
     name: "register",
     component: Register,
+    props:true,
+  },
+  {
+    path: "/verify",
+    name: "verify",
+    component: Verify,
     props:true,
   }
   
