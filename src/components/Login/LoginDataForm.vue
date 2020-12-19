@@ -45,6 +45,22 @@
                 />
               </center>
             </div>
+            <div class="container">
+              <router-link
+                :to="{
+                  name: 'register',
+                  params: {
+                    data: {
+                      loginData: {
+                        id: form.id,
+                        userType: form.userTypeSelected,
+                      },
+                    },
+                  },
+                }"
+                >Siguiente</router-link
+              >
+            </div>
           </form>
         </div>
       </div>
@@ -57,7 +73,11 @@ export default {
   name: "LoginDataForm",
   data() {
     return {
-      documentLabel: "Identificacion", // cambiar es a "NULL", para hacer una implementacion dinamica con transiciones
+      customUser: {
+        id: "202020",
+        status: "register",
+      },
+      documentLabel: "Identificacion", // cambiar esto a "NULL", para hacer una implementacion dinamica con transiciones
       form: {
         userTypes: [
           {
@@ -98,10 +118,6 @@ export default {
     },
     pickUserType() {
       console.log(this.form.nameSelected);
-      /*una buena alternativa y mas elegante a un for comun...
-      /siempre es bueno investigar y ver formas elegantes de codigo
-      /divertida conclusion porque probablemente este haciendo tonteras por otro lado...
-      /pero si alguien lo lee es una buena reflexion!!!*/
       let selected = this.form.userTypes.find(
         (element) => element.name === this.form.nameSelected
       );
@@ -112,8 +128,12 @@ export default {
   },
   computed: {
     getDocumentLabel() {
+      //Por el momento esto solo esta de adorno...
       if (this.form.userTypeSelected.isLegal) return "Identificaicon";
       else return "Email";
+    },
+    action() {
+      return this.customUser.status;
     },
   },
 };

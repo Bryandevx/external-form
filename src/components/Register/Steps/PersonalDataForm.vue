@@ -20,12 +20,12 @@
 
               <input
                 type="text"
-                v-if="masterData.loginData.userType.isLegal"
+                v-if="masterData.userType.isLegal"
                 v-model="form.id"
                 class="form-control"
                 disabled
               />
-              <input type="text" v-else class="form-control" disabled />
+              <input v-else type="text" class="form-control" disabled />
             </div>
 
             <div @change="submit" class="form-group col-md-4">
@@ -62,15 +62,14 @@
 export default {
   name: "PersonalDataForm",
   props: {
-    masterData: {
-      type: Object,
-      required: true,
-    },
+    masterData:{
+      type:Object
+    }
   },
   data() {
     return {
       form: {
-        id: this.masterData.loginData.id,
+        id: this.masterData.id,
         fullName: null,
         birthDate: null, // validar que sea tipo fecha...
         gender: null,

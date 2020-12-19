@@ -68,10 +68,6 @@
 export default {
   name: "OtherDataForm",
   props: {
-    masterData: {
-      type: Object,
-      required: true,
-    },
   },
   data() {
     return {

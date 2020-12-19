@@ -9,7 +9,7 @@
         <div @input="submit" class="form-row">
           <div class="form-group col-md-6">
             <label class="control-label" for="mail">Correo</label><br />
-            <input type="text" v-if="!masterData.loginData.userType.isLegal" class="form-control" required disabled/>
+            <input type="text" v-if="!masterData.userType.isLegal" v-model="form.email" class="form-control" required disabled/>
             <input type="text" v-else v-model="form.email" class="form-control" required>
             <div id="email_error"></div>
             <br />
@@ -52,14 +52,13 @@ export default {
   name: "ContactDataForm",
   props:{
     masterData:{
-      type:Object,
-      required:true,
-    },
+      type:Object
+    }
   },
   data() {
     return {
       form: {
-        email: null,
+        email: this.masterData.id,
         phone: null,
         distrit: null,
         address: null,

@@ -1,12 +1,13 @@
 <template>
   <div>
+
     <div class="container">
       <keep-alive>
         <component
           ref="currentStep"
           :is="currentStep"
           @update="processStep"
-          :masterData="formData"
+          :masterData="formData.loginData"
         >
         </component>
       </keep-alive>
@@ -38,15 +39,16 @@
 
 
 <script>
-import ContactDataForm from "./Steps/ContactDataForm.vue";
-import LoginDataForm from "./Steps/LoginDataForm.vue";
-import OtherDataForm from "./Steps/OtherDataForm.vue";
+//import LoginDataForm from "./Steps/LoginDataForm.vue";
 import PersonalDataForm from "./Steps/PersonalDataForm.vue";
+import ContactDataForm from "./Steps/ContactDataForm.vue";
+import OtherDataForm from "./Steps/OtherDataForm.vue";
+
 
 export default {
   name: "MasterForm",
   components: {
-    LoginDataForm,
+  //  LoginDataForm,
     PersonalDataForm,
     ContactDataForm,
     OtherDataForm,
@@ -55,13 +57,13 @@ export default {
     return {
       currentStepNumber: 1,
       steps: [
-        "LoginDataForm",
+        //"LoginDataForm",
         "PersonalDataForm",
         "ContactDataForm",
         "OtherDataForm",
       ],
       formData: {
-        loginData: null,
+        loginData: this.$route.params.data.loginData,
         personalData: null,
         contactData: null,
         otherData: null,
@@ -92,6 +94,9 @@ export default {
     length() {
       return this.steps.length;
     },
+    type(){
+      return typeof(this.formData.loginData);
+    }
   },
 };
 </script>
