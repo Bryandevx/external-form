@@ -47,20 +47,9 @@
               </center>
             </div>
             <div class="container">
-              <router-link
-                :to="{
-                  :name = {{action}},
-                  params: {
-                    data: {
-                      loginData: {
-                        id: form.id,
-                        userType: form.userTypeSelected,
-                      },
-                    },
-                  },
-                }"
-                >Siguiente</router-link
-              >
+              <button class="btn btn-primary" @click="nextRoute">
+                Continuar
+              </button>
             </div>
           </form>
         </div>
@@ -74,21 +63,22 @@ export default {
   name: "LoginDataForm",
   data() {
     return {
+      route: "home",
       customUsers: [
         {
           name: "Bryan",
-          id: 101010,
-          status: "register",
+          id: "101010",
+          status: "pending",
         },
         {
           name: "Jose",
           id: 202020,
-          status: "verify",
+          status: "pending",
         },
         {
           name: "Maria",
           id: 303030,
-          satus: "citas",
+          satus: "unblocked",
         },
       ],
 
@@ -147,23 +137,33 @@ export default {
       if (typeof result === "undefined") console.log("element not found");
       else console.log("NAME FOUND!");
     },
+    nextRoute() {
+      let user = this.customUsers.find(
+        (element) => element.id === this.form.id
+      );
+      if (typeof user !== "undefined") {
+        if (user.status === "pending") this.route = "verify";
+      } else {
+        this.route = "register";
+      }
+      this.$router.push({
+        name: this.route,
+        params: {
+          data: {
+            loginData: {
+              id: this.form.id,
+              userType: this.form.userTypeSelected,
+            },
+          },
+        },
+      });
+    },
   },
   computed: {
     getDocumentLabel() {
       //Por el momento esto solo esta de adorno...
       if (this.form.userTypeSelected.isLegal) return "Identificaicon";
       else return "Email";
-    },
-    action() {
-      let result = this.customUsers.find( (element) =>
-      element.id === this.form.id)
-      
-      if(typeof(result) !== 'undefined'){
-        if(result.status === 'register') return 'register'
-        if(result.statis === 'verify') return  'verify'
-      }
-
-      return 'home' // default route?
     },
   },
 };
