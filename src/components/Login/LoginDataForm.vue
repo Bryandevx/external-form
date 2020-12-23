@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import loggedUser from "@/user";
 export default {
   name: "LoginDataForm",
   data() {
@@ -68,17 +69,17 @@ export default {
         {
           name: "Bryan",
           id: "101010",
-          status: "pending",
+          status: "pending", // aun no ha confirmado el email
         },
         {
           name: "Jose",
-          id: 202020,
-          status: "pending",
+          id: "202020",
+          status: "blocked", // ya solicito una cita para esta semana
         },
         {
           name: "Maria",
-          id: 303030,
-          satus: "unblocked",
+          id: "1122",
+          satus: "unblocked", // cumole con todos los requisitos para solicitar una cita
         },
       ],
 
@@ -142,7 +143,13 @@ export default {
         (element) => element.id === this.form.id
       );
       if (typeof user !== "undefined") {
-        if (user.status === "pending") this.route = "verify";
+        if (user.status === "pending") {
+          this.route = "verify";
+          loggedUser.currentUser = user;
+        } else {
+          this.route = "citas";
+          loggedUser.currentUser = user;
+        }
       } else {
         this.route = "register";
       }
