@@ -9,13 +9,26 @@
         <div @input="submit" class="form-row">
           <div class="form-group col-md-6">
             <label class="control-label" for="mail">Correo</label><br />
-            <input type="text" v-if="!masterData.userType.isLegal" v-model="form.email" class="form-control" required disabled/>
-            <input type="text" v-else v-model="form.email" class="form-control" required>
+
+            <input
+              type="text"
+              v-if="!masterData.userType.isLegal && masterData.email"
+              v-model="form.email"
+              class="form-control"
+              disabled
+            />
+            <input
+              type="text"
+              v-else
+              v-model="form.email"
+              class="form-control"
+              required
+            />
             <div id="email_error"></div>
             <br />
           </div>
 
-          <div @input=submit class="form-group col-md-3">
+          <div @input="submit" class="form-group col-md-3">
             <label class="control-label" for="phone">Teléfono</label><br />
             <input class="form-control" v-model.number="form.phone" required />
           </div>
@@ -37,7 +50,12 @@
           <div class="form-group col-md-12">
             <label class="control-label" for="direction">Dirección Exacta</label
             ><br />
-            <textarea cols="30" rows="3" v-model="form.address"  class="form-control"></textarea>
+            <textarea
+              cols="30"
+              rows="3"
+              v-model="form.address"
+              class="form-control"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -50,15 +68,15 @@
 <script>
 export default {
   name: "ContactDataForm",
-  props:{
-    masterData:{
-      type:Object
-    }
+  props: {
+    masterData: {
+      type: Object,
+    },
   },
   data() {
     return {
       form: {
-        email: this.masterData.id,
+        email: this.masterData.email,
         phone: null,
         distrit: null,
         address: null,

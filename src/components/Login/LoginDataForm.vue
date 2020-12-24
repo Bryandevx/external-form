@@ -18,6 +18,7 @@
                   class="form-control"
                   style="background-color: white; width: 200px; color: black"
                 >
+                  <option selected disabled value="default">Seleccione</option>
                   <option
                     v-for="userType in form.userTypes"
                     :key="userType.type"
@@ -28,7 +29,7 @@
                 </select>
               </center>
             </div>
-            <div id="identification_div" @input="submit" class="form-group">
+            <div v-show="form.userTypeSelected" id="identification_div" @input="submit" class="form-group">
               <label
                 id="label_identification"
                 for="identification"
@@ -38,11 +39,29 @@
               <center>
                 <input
                   v-model="form.id"
+                  v-show="
+                    !form.userTypeSelected ||
+                    form.userTypeSelected.isLegal === true
+                  "
                   type="text"
                   name="identification"
                   id="identification"
                   class="form-control"
                   style="width: 200px"
+                  :disabled="!form.userTypeSelected"
+                /> <!--"!form.userTypeSelected" verifica si la data es null-->
+                <input
+                  v-show="
+                    form.userTypeSelected &&
+                    form.userTypeSelected.isLegal === false
+                  "
+                  v-model="form.email"
+                  type="text"
+                  name="identification"
+                  id="identification"
+                  class="form-control"
+                  style="width: 200px"
+                  :disabled="!form.userTypeSelected"
                 />
               </center>
             </div>
@@ -79,7 +98,7 @@ export default {
         {
           name: "Maria",
           id: "1122",
-          satus: "unblocked", // cumole con todos los requisitos para solicitar una cita
+          satus: "unblocked", // cumple  con todos los requisitos para solicitar una cita
         },
       ],
 
@@ -103,6 +122,7 @@ export default {
           },
         ],
         id: null,
+        email: null,
         userTypeSelected: null, // este sera el objeto enviado
         nameSelected: null /* aqui se almacenara solo el name(nacional, extranjero etc..) 
         con este nombre se hara una busqueda en el array userTypes para encontrar el nombre seleccionado y asignar
@@ -117,12 +137,15 @@ export default {
         data: {
           loginData: {
             id: this.form.id,
+            email: this.form.email,
             userType: this.form.userTypeSelected,
           },
         },
       });
     },
     pickUserType() {
+      this.form.email = null;
+      this.form.id = null;
       console.log(this.form.nameSelected);
       let selected = this.form.userTypes.find(
         (element) => element.name === this.form.nameSelected
@@ -159,6 +182,7 @@ export default {
           data: {
             loginData: {
               id: this.form.id,
+              email: this.form.email,
               userType: this.form.userTypeSelected,
             },
           },

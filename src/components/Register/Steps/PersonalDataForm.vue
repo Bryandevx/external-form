@@ -20,7 +20,7 @@
 
               <input
                 type="text"
-                v-if="masterData.userType.isLegal"
+                v-if="masterData.userType.isLegal === true && masterData.id"
                 v-model="form.id"
                 class="form-control"
                 disabled
