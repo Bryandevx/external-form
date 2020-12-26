@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
-import vuelidate from 'vuelidate'
+import Vuelidate from 'vuelidate'
 import router from './router'
 
-Vue.use(vuelidate)
+Vue.use(Vuelidate)
 Vue.config.productionTip = false
 
 

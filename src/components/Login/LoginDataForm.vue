@@ -29,12 +29,17 @@
                 </select>
               </center>
             </div>
-            <div v-show="form.userTypeSelected" id="identification_div" @input="submit" class="form-group">
+            <div
+              v-show="form.userTypeSelected"
+              id="identification_div"
+              @input="submit"
+              class="form-group"
+            >
               <label
                 id="label_identification"
                 for="identification"
                 class="card-text col-form-label"
-                >Identificacion</label
+                >{{documentLabel}}</label
               >
               <center>
                 <input
@@ -49,7 +54,8 @@
                   class="form-control"
                   style="width: 200px"
                   :disabled="!form.userTypeSelected"
-                /> <!--"!form.userTypeSelected" verifica si la data es null-->
+                />
+                <!--"!form.userTypeSelected" verifica si la data es null-->
                 <input
                   v-show="
                     form.userTypeSelected &&
@@ -79,11 +85,13 @@
 
 <script>
 import loggedUser from "@/user";
+import { required, numeric, minLength } from 'vuelidate/lib/validators';
 export default {
   name: "LoginDataForm",
   data() {
     return {
       route: "home",
+
       customUsers: [
         {
           name: "Bryan",
@@ -102,7 +110,7 @@ export default {
         },
       ],
 
-      documentLabel: "Identificacion", // cambiar esto a "NULL", para hacer una implementacion dinamica con transiciones
+      documentLabel: "", // cambiar esto a "NULL", para hacer una implementacion dinamica con transiciones
       form: {
         userTypes: [
           {
@@ -130,7 +138,16 @@ export default {
       },
     };
   },
-  validations: {},
+  validations: {
+    form: {
+      id:{
+        required,
+        minLength: minLength(9),
+        numeric
+        
+      },
+    }
+  },
   methods: {
     submit() {
       this.$emit("update", {
@@ -152,7 +169,7 @@ export default {
       );
       this.form.userTypeSelected = selected;
       this.submit();
-      //this.getDocumentLabel();
+      this.getDocumentLabel();
     },
     findUser() {
       console.log("at find user method");
@@ -189,13 +206,13 @@ export default {
         },
       });
     },
-  },
-  computed: {
     getDocumentLabel() {
       //Por el momento esto solo esta de adorno...
-      if (this.form.userTypeSelected.isLegal) return "Identificaicon";
-      else return "Email";
+      if (this.form.userTypeSelected.isLegal) {
+        this.documentLabel = "Identificacion";
+      } else this.documentLabel = "Email";
     },
   },
+  computed: {},
 };
 </script>

@@ -17,20 +17,44 @@
               class="form-control"
               disabled
             />
+
+
             <input
               type="text"
               v-else
               v-model="form.email"
+              @blur="$v.form.email.$touch()"
               class="form-control"
               required
             />
-            <div id="email_error"></div>
+            <div v-if="$v.form.email.$error" class="">
+              <p v-if="!$v.form.email.required" class="error text-danger">Email is required</p>
+              <p v-else-if="!$v.form.email.email" class="error text-danger">Invalid email format</p>
+
+            </div>
             <br />
           </div>
 
           <div @input="submit" class="form-group col-md-3">
             <label class="control-label" for="phone">Teléfono</label><br />
-            <input class="form-control" v-model.number="form.phone" required />
+            <input
+              class="form-control"
+              @blur="$v.form.phone.$touch()"
+              v-model.number="form.phone"
+              maxlength="9"
+              required
+            />
+
+            <div v-if="$v.form.phone.$error" class="">
+              <p v-if="!$v.form.phone.minLength" class="error text-danger">
+                Phone number must contain 9 digits
+              </p>
+              <p v-else-if="!$v.form.phone.integer" class="error text-danger">
+                Phone number only accepts numbers
+              </p>
+              <p v-else-if="!$v.form.phone.required" class="error text-danger">Phone number is required</p>
+
+            </div>
           </div>
 
           <div @change="submit" class="form-group col-md-3">
@@ -66,6 +90,7 @@
 
 
 <script>
+import { required, email, integer, minLength } from "vuelidate/lib/validators";
 export default {
   name: "ContactDataForm",
   props: {
@@ -83,6 +108,21 @@ export default {
       },
     };
   },
+
+  validations: {
+    form: {
+      email: {
+        required,
+        email,
+      },
+      phone: {
+        required,
+        integer,
+        minLength: minLength(8),
+      },
+    },
+  },
+
   methods: {
     submit() {
       this.$emit("update", {
