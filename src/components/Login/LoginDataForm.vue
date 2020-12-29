@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex flex-column justify-content-center align-items-center">
-    <button @click="findUser" class="btn btn-primary">User checker</button>
     <div class="d-flex flex-row">
       <div
         class="card text-center shadow-lg p-3 mb-5 bg-white rounded"
@@ -86,31 +85,13 @@
 <script>
 import { required, numeric, minLength } from 'vuelidate/lib/validators';
 import { globalUser } from '@/main.js'
+import { db } from '@/api/users_db.js'
 export default {
   name: "LoginDataForm",
   data() {
     return {
       route: "home",
-
-      customUsers: [
-        {
-          name: "Bryan",
-          id: "101010",
-          status: "pending", // aun no ha confirmado el email
-        },
-        {
-          name: "Jose",
-          id: "202020",
-          status: "blocked", // ya solicito una cita para esta semana
-        },
-        {
-          name: "Maria",
-          id: "1122",
-          satus: "unblocked", // cumple  con todos los requisitos para solicitar una cita
-        },
-      ],
-
-      documentLabel: "", // cambiar esto a "NULL", para hacer una implementacion dinamica con transiciones
+      documentLabel: "",
       form: {
         userTypes: [
           {
@@ -172,15 +153,10 @@ export default {
       this.getDocumentLabel();
     },
     findUser() {
-      console.log("at find user method");
-      let name = "Luis";
-      let result = this.customUsers.find((element) => element.name === name);
-      if (typeof result === "undefined") console.log("element not found");
-      else console.log("NAME FOUND!");
     },
     nextRoute() {
-      
-      let user = this.customUsers.find(
+      console.log(db.user)
+      let user = db.find(
         (element) => element.id === this.form.id
       );
       if (typeof user !== "undefined") {

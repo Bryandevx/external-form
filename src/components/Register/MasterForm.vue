@@ -47,7 +47,6 @@
 
 <script>
 //import LoginDataForm from "./Steps/LoginDataForm.vue";
-import loggedUser from "@/user";
 import PersonalDataForm from "./Steps/PersonalDataForm.vue";
 import ContactDataForm from "./Steps/ContactDataForm.vue";
 import OtherDataForm from "./Steps/OtherDataForm.vue";
@@ -87,7 +86,6 @@ export default {
     },
     submitForm() {
       console.log(this.formData.loginData.id);
-      loggedUser.currenUser =  12323123;
       this.$router.push({
         name: "verify",
         params: {

@@ -94,6 +94,7 @@
 
 <script>
 import { required, email, integer, minLength } from "vuelidate/lib/validators";
+//import { db } from '@/api/users_db.js'
 export default {
   name: "ContactDataForm",
   props: {
@@ -117,6 +118,14 @@ export default {
       email: {
         required,
         email,
+        isUnique(value) {
+          // simulate async call, fail for all logins with even length
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(typeof value === "string" && value.length % 2 !== 0);
+            }, 2000)
+          });
+        },
       },
       phone: {
         required,
