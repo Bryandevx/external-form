@@ -84,8 +84,8 @@
 </template>
 
 <script>
-import loggedUser from "@/user";
 import { required, numeric, minLength } from 'vuelidate/lib/validators';
+import { globalUser } from '@/main.js'
 export default {
   name: "LoginDataForm",
   data() {
@@ -179,18 +179,20 @@ export default {
       else console.log("NAME FOUND!");
     },
     nextRoute() {
+      
       let user = this.customUsers.find(
         (element) => element.id === this.form.id
       );
       if (typeof user !== "undefined") {
         if (user.status === "pending") {
           this.route = "verify";
-          loggedUser.currentUser = user;
+          globalUser.userData = user;
         } else {
           this.route = "citas";
-          loggedUser.currentUser = user;
+          globalUser.userData = user;
         }
       } else {
+        globalUser.userData = 'guest'
         this.route = "register";
       }
       this.$router.push({

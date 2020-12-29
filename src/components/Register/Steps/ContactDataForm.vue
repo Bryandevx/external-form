@@ -18,7 +18,6 @@
               disabled
             />
 
-
             <input
               type="text"
               v-else
@@ -28,9 +27,12 @@
               required
             />
             <div v-if="$v.form.email.$error" class="">
-              <p v-if="!$v.form.email.required" class="error text-danger">Email is required</p>
-              <p v-else-if="!$v.form.email.email" class="error text-danger">Invalid email format</p>
-
+              <p v-if="!$v.form.email.required" class="error text-danger">
+                Email is required
+              </p>
+              <p v-else-if="!$v.form.email.email" class="error text-danger">
+                Invalid email format
+              </p>
             </div>
             <br />
           </div>
@@ -52,8 +54,9 @@
               <p v-else-if="!$v.form.phone.integer" class="error text-danger">
                 Phone number only accepts numbers
               </p>
-              <p v-else-if="!$v.form.phone.required" class="error text-danger">Phone number is required</p>
-
+              <p v-else-if="!$v.form.phone.required" class="error text-danger">
+                Phone number is required
+              </p>
             </div>
           </div>
 
@@ -134,6 +137,7 @@ export default {
             address: this.form.address,
           },
         },
+        valid: !this.$v.form.$invalid,
       });
     },
   },

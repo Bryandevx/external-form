@@ -65,6 +65,7 @@
 
 
 <script>
+import { required } from "vuelidate/lib/validators";
 export default {
   name: "OtherDataForm",
   props: {
@@ -79,6 +80,11 @@ export default {
       },
     };
   },
+  validations:{
+    form:{
+      required,      
+    }
+  },
   methods: {
     submit() {
       this.$emit("update", {
@@ -90,6 +96,7 @@ export default {
             occupation: this.form.occupation,
           },
         },
+        valid: !this.$v.form.$invalid,
       });
     },
   },

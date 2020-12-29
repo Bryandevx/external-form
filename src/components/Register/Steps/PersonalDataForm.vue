@@ -117,6 +117,7 @@ export default {
             gender: this.form.gender,
           },
         },
+        valid: !this.$v.form.$invalid,
       });
     },
   },
