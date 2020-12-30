@@ -4,7 +4,8 @@ import Home from "../views/Home.vue";
 import Register from "../views/Register.vue";
 import Verify from "../views/Verify.vue";
 import Citas from "../views/Citas.vue";
-import {globalUser} from '@/main.js'
+import NotFound from "../views/NotFound.vue";
+import { globalUser } from "@/main.js";
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,15 @@ const routes = [
     component: Register,
     props: true,
     meta: { requiresAuth: true },
+    beforeEnter: (to, from, next) => {
+      if (globalUser.userType !== "guest") {
+        next({
+          name: "home",
+        });
+      } else {
+        next();
+      }
+    },
   },
   {
     //trabajando esta ruta para
@@ -46,6 +56,11 @@ const routes = [
     props: true,
     meta: { requiresAuth: true },
   },
+  {
+    path: "*",
+    name: "notFound",
+    component: NotFound,
+  },
 ];
 
 const router = new VueRouter({
@@ -55,9 +70,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(`Global user --> ${globalUser.userData}`)
+  console.log(`Global user --> ${globalUser.userData}`);
   if (to.meta.requiresAuth) {
-    if (!globalUser.userData) {
+    if (!globalUser.userType) {
       next({
         name: "home",
       });

@@ -21,14 +21,15 @@
             <input
               type="text"
               v-else
-              v-model="form.email"
+              v-model.lazy="form.email"
               @blur="$v.form.email.$touch()"
               class="form-control"
               required
             />
+            <span v-show="$v.form.email.$pending" class="fa fa-spinner fa-spin">Verificando...</span>
             <div v-if="$v.form.email.$error" class="">
-              <p v-if="!$v.form.email.required" class="error text-danger">
-                Email is required
+              <p v-if="!$v.form.email.exists" class="error text-danger">
+                This is email is currently in use
               </p>
               <p v-else-if="!$v.form.email.email" class="error text-danger">
                 Invalid email format
@@ -94,7 +95,9 @@
 
 <script>
 import { required, email, integer, minLength } from "vuelidate/lib/validators";
-//import { db } from '@/api/users_db.js'
+import { helpers } from "vuelidate/lib/validators";
+import { db } from "@/api/users_db.js";
+const emailAuth = (email) => db.find((element) => element.email === email);
 export default {
   name: "ContactDataForm",
   props: {
@@ -116,16 +119,18 @@ export default {
   validations: {
     form: {
       email: {
-        required,
-        email,
-        isUnique(value) {
-          // simulate async call, fail for all logins with even length
+        exists(value) {
+          if (!helpers.req(value)) {
+            return true;
+          }
+          console.log(`MAIL VALUE ${emailAuth(value)}`);
           return new Promise((resolve) => {
             setTimeout(() => {
-              resolve(typeof value === "string" && value.length % 2 !== 0);
-            }, 2000)
+              resolve(typeof emailAuth(value) === 'undefined');
+            }, 1000);
           });
         },
+        email
       },
       phone: {
         required,

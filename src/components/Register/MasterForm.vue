@@ -50,6 +50,7 @@
 import PersonalDataForm from "./Steps/PersonalDataForm.vue";
 import ContactDataForm from "./Steps/ContactDataForm.vue";
 import OtherDataForm from "./Steps/OtherDataForm.vue";
+import { globalUser } from '@/main.js'
 
 export default {
   name: "MasterForm",
@@ -85,7 +86,7 @@ export default {
       this.canGoNext = step.valid;
     },
     submitForm() {
-      console.log(this.formData.loginData.id);
+      globalUser.userType = "registered"
       this.$router.push({
         name: "verify",
         params: {

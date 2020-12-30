@@ -162,13 +162,14 @@ export default {
       if (typeof user !== "undefined") {
         if (user.status === "pending") {
           this.route = "verify";
-          globalUser.userData = user;
+          globalUser.userType = "registered"
+
         } else {
           this.route = "citas";
-          globalUser.userData = user;
+          globalUser.userType = "registered";
         }
       } else {
-        globalUser.userData = 'guest'
+        globalUser.userType = 'guest'
         this.route = "register";
       }
       this.$router.push({
@@ -185,7 +186,6 @@ export default {
       });
     },
     getDocumentLabel() {
-      //Por el momento esto solo esta de adorno...
       if (this.form.userTypeSelected.isLegal) {
         this.documentLabel = "Identificacion";
       } else this.documentLabel = "Email";
