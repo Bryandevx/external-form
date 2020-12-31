@@ -1,134 +1,161 @@
 <template>
-  <div>
-    <div class="container">
-      <keep-alive>
-        <component
-          ref="currentStep"
-          :is="currentStep"
-          @update="processStep"
-          :masterData="formData.loginData"
-        >
-        </component>
-      </keep-alive>
-    </div>
+	<div>
+		<button @click="test" class="btn btn-danger">Test</button>
 
-    <div class="container">
-      <div class="progress">
-        <div
-          class="progress-bar"
-          role="progressbar"
-          :style="`width: ${progress}%;`"
-          aria-valuenow="100"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
-      </div>
-    </div>
+		<div class="container">
+			<keep-alive>
+				<component
+					ref="currentStep"
+					:is="currentStep"
+					@update="processStep"
+					:masterData="formData.loginData"
+				>
+				</component>
+			</keep-alive>
+		</div>
 
-    <div class="container">
-      <button
-        v-show="currentStepNumber > 1"
-        @click="goPrevStep"
-        class="btn-outlined"
-      >
-        Go Back
-      </button>
-      <button :disabled="!canGoNext" @click="nextButtonAction" class="btn">
-        {{ isLastStep ? "Complete Form" : "Next" }}
-      </button>
-    </div>
+		<div class="container">
+			<div class="progress">
+				<div
+					class="progress-bar"
+					role="progressbar"
+					:style="`width: ${progress}%;`"
+					aria-valuenow="100"
+					aria-valuemin="0"
+					aria-valuemax="100"
+				></div>
+			</div>
+		</div>
 
-    <pre><code>{{currentStep}} is Step {{currentStepNumber}}</code></pre>
-    <pre><code>{{formData}}</code></pre>
-  </div>
+		<div class="container">
+			<button
+				v-show="currentStepNumber > 1"
+				@click="goPrevStep"
+				class="btn-outlined"
+			>
+				Go Back
+			</button>
+			<button
+				:disabled="!canGoNext"
+				@click="nextButtonAction"
+				class="btn"
+			>
+				{{ isLastStep ? "Complete Form" : "Next" }}
+			</button>
+		</div>
+
+		<pre><code>{{currentStep}} is Step {{currentStepNumber}}</code></pre>
+		<pre><code>{{formData}}</code></pre>
+	</div>
 </template>
-
-
 
 <script>
 //import LoginDataForm from "./Steps/LoginDataForm.vue";
 import PersonalDataForm from "./Steps/PersonalDataForm.vue";
 import ContactDataForm from "./Steps/ContactDataForm.vue";
 import OtherDataForm from "./Steps/OtherDataForm.vue";
-import { globalUser } from '@/main.js'
+import { globalUser } from "@/main.js";
 
 export default {
-  name: "MasterForm",
-  components: {
-    //  LoginDataForm,
-    PersonalDataForm,
-    ContactDataForm,
-    OtherDataForm,
-  },
-  data() {
-    return {
-      canGoNext: false,
-      currentStepNumber: 1,
-      steps: [
-        //"LoginDataForm",
-        "PersonalDataForm",
-        "ContactDataForm",
-        "OtherDataForm",
-      ],
-      formData: {
-        loginData: this.$route.params.data.loginData,
-        personalData: null,
-        contactData: null,
-        otherData: null,
-      },
-    };
-  },
-  validations: {},
-  methods: {
-    processStep(step) {
-      console.log("here processing some steps!!");
-      Object.assign(this.formData, step.data);
-      this.canGoNext = step.valid;
-    },
-    submitForm() {
-      globalUser.userType = "registered"
-      this.$router.push({
-        name: "verify",
-        params: {
-          data: this.formData.loginData,
-        },
-      });
-    },
-    nextButtonAction() {
-      if (this.isLastStep) {
-        this.submitForm();
-      } else {
-        this.goNextStep();
-      }
-    },
-    goNextStep() {
-      this.currentStepNumber += 1;
-      this.canGoNext = false;
-    },
-    goPrevStep() {
-      this.currentStepNumber -= 1;
-    },
-  },
-  computed: {
-    progress() {
-      return (this.currentStepNumber / this.length) * 100;
-    },
-    currentStep() {
-      //retorna el nombre del componente..(loginDataForm, PersonalDataForm,....)
-      return this.steps[this.currentStepNumber - 1];
-    },
-    length() {
-      return this.steps.length;
-    },
-    type() {
-      return typeof this.formData.loginData;
-    },
-    formInProgress() {
-      return this.currentStepNumber <= this.steps.length;
-    },
-    isLastStep() {
-      return this.currentStepNumber === this.steps.length;
-    },
-  },
+	name: "MasterForm",
+	components: {
+		//  LoginDataForm,
+		PersonalDataForm,
+		ContactDataForm,
+		OtherDataForm,
+	},
+	data() {
+		return {
+			canGoNext: false,
+			currentStepNumber: 1,
+			steps: [
+				//"LoginDataForm",
+				"PersonalDataForm",
+				"ContactDataForm",
+				"OtherDataForm",
+			],
+			formData: {
+				loginData: this.$route.params.data.loginData,
+				personalData: null,
+				contactData: null,
+				otherData: null,
+			},
+
+			current: null,
+		};
+	},
+
+	methods: {
+		test() {
+			let params = this.$route.params;
+			this.$router.push({ name: "about", params });
+		},
+
+		processStep(step) {
+			console.log("here processing some steps!!");
+			Object.assign(this.formData, step.data);
+			this.canGoNext = step.valid;
+		},
+		submitForm() {
+			globalUser.userType = "registered";
+			this.$router.push({
+				name: "verify",
+				params: {
+					data: this.formData.loginData,
+				},
+			});
+		},
+		nextButtonAction() {
+			console.log(this.$route.params);
+			if (this.isLastStep) {
+				this.submitForm();
+			} else {
+				this.goNextStep();
+			}
+		},
+		goNextStep() {
+			this.currentStepNumber += 1;
+			this.canGoNext = false;
+		},
+		goPrevStep() {
+			this.currentStepNumber -= 1;
+		},
+	},
+	computed: {
+		progress() {
+			return (this.currentStepNumber / this.length) * 100;
+		},
+
+		currentStep() {
+			//retorna el nombre del componente..(loginDataForm, PersonalDataForm,....)
+			return this.steps[this.currentStepNumber - 1];
+		},
+
+		length() {
+			return this.steps.length;
+		},
+
+		type() {
+			return typeof this.formData.loginData;
+		},
+
+		formInProgress() {
+			return this.currentStepNumber <= this.steps.length;
+		},
+
+		isLastStep() {
+			return this.currentStepNumber === this.steps.length;
+		},
+
+		user: {
+			get() {
+				return this.$route.params.user;
+			},
+
+			set(value) {
+				this.$route.params.user = value;
+			},
+		},
+	},
 };
 </script>
