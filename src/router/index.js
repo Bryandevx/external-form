@@ -7,7 +7,6 @@ import Register from "../views/Register.vue";
 import Verify from "../views/Verify.vue";
 import Citas from "../views/Citas.vue";
 import NotFound from "../views/NotFound.vue";
-//import { globalUser } from "@/main.js";
 
 Vue.use(VueRouter);
 
@@ -19,23 +18,16 @@ const routes = [
 	},
 
 	{
-		path: "/about",
-		name: "about",
-		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/About.vue"),
-	},
-
-	{
 		path: "/register",
 		name: "register",
 		component: Register,
+
 		props: true,
-		meta: { requireLogged: true },
-
+		meta: { login: true },
 		beforeEnter: (to, from, next) => {
-			let auth = to.params.auth;
+			const auth = to.params.auth;
 
-			if (auth && !auth.authenticated) {
+			if (!auth.authenticated) {
 				next();
 			} else {
 				next("/");
@@ -47,25 +39,36 @@ const routes = [
 		path: "/verify",
 		name: "verify",
 		component: Verify,
-		props: true,
-		// meta: { requireLogged: true },
-		// beforeEnter: (to, from, next) => {
-		// 	const auth = to.params.auth;
 
-		// 	if (auth.confirmation) {
-		// 		next();
-		// 	} else {
-		// 		next("/");
-		// 	}
-		// },
+		props: true,
+		meta: { login: true },
+		beforeEnter: (to, from, next) => {
+			const auth = to.params.auth;
+
+			if (!auth.confirmed) {
+				next();
+			} else {
+				next("/");
+			}
+		},
 	},
 
 	{
 		path: "/citas",
 		name: "citas",
 		component: Citas,
+
 		props: true,
-		meta: { requiresAuth: true },
+		meta: { login: true },
+		beforeEnter: (to, from, next) => {
+			const auth = to.params.auth;
+
+			if (auth.authenticated && auth.confirmed) {
+				next();
+			} else {
+				next("/");
+			}
+		},
 	},
 
 	{
@@ -82,7 +85,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	if (to.meta.requireLogged) {
+	if (to.meta.login) {
 		const auth = to.params.auth;
 
 		if (auth && auth.logged) {
@@ -94,20 +97,5 @@ router.beforeEach((to, from, next) => {
 		next();
 	}
 });
-
-// router.beforeEach((to, from, next) => {
-// 	//console.log(`Global user --> ${globalUser}`);
-// 	if (to.meta.requiresAuth) {
-// 		if (!globalUser.userType) {
-// 			next({
-// 				name: "home",
-// 			});
-// 		} else {
-// 			next();
-// 		}
-// 	} else {
-// 		next();
-// 	}
-// });
 
 export default router;

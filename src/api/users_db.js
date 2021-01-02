@@ -15,7 +15,7 @@ export const db = [
 		name: "Maria",
 		email: "maria@gmail.com",
 		id: "1122",
-		satus: "unblocked", // cumple  con todos los requisitos para solicitar una cita
+		status: "unblocked", // cumple  con todos los requisitos para solicitar una cita
 	},
 ];
 
